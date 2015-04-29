@@ -2,13 +2,6 @@
 <items version="2" >
 
     <item
-        jar="/Users/huangpeng/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
-        <dex dex="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/pre-dexed/debug/support-annotations-22.0.0-125c10dc72a9758a2a466bea9d4ac7b822f15e53.jar" />
-    </item>
-    <item
         jar="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/exploded-aar/com.larswerkman/HoloColorPicker/1.4/classes.jar"
         jumboMode="false"
         revision="21.1.1"
@@ -16,18 +9,25 @@
         <dex dex="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/pre-dexed/debug/classes-acd67c77bce4aa9b7230e84fb64d7ee8e96a531f.jar" />
     </item>
     <item
-        jar="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/libs/internal_impl-22.0.0.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
-        <dex dex="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-7eee23a61934ce64dd4b4eb74490f6b94586333b.jar" />
-    </item>
-    <item
         jar="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/classes.jar"
         jumboMode="false"
         revision="21.1.1"
         sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
         <dex dex="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/pre-dexed/debug/classes-7b72910cb6776407ede74c9e86961f0f9158bfa3.jar" />
+    </item>
+    <item
+        jar="/Users/huangpeng/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
+        <dex dex="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/pre-dexed/debug/support-annotations-22.0.0-125c10dc72a9758a2a466bea9d4ac7b822f15e53.jar" />
+    </item>
+    <item
+        jar="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/libs/internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-7eee23a61934ce64dd4b4eb74490f6b94586333b.jar" />
     </item>
 
 </items>

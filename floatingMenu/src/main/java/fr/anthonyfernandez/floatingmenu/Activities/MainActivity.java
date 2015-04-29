@@ -64,6 +64,14 @@ public class MainActivity extends Activity {
 				stopService(new Intent(MainActivity.this, ServiceFloating.class));
 			}
 		});
+
+        Button configApps = (Button)findViewById(R.id.button_config_apps);
+        configApps.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: start a list of installed apps with selection
+            }
+        });
 	}
 
 	@Override

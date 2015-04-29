@@ -51,6 +51,15 @@
         android:text="Configuration"
         android:textColor="#FFF" />
 
+    <Button
+        android:id="@+id/button_config_apps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="#34495e"
+        android:text="Select Quick Luanch Apps"
+        android:textColor="#FFF" />
+
     <View
         android:id="@+id/view1"
         android:layout_width="wrap_content"
