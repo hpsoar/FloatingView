@@ -4,21 +4,23 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.1"
-
     defaultConfig {
-        minSdkVersion 11
+        minSdkVersion 21
         targetSdkVersion 21
     }
-
     buildTypes {
         release {
             //runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.google.android.gms:play-services:6.5.87'
     compile 'com.larswerkman:HoloColorPicker:1.4'
     compile 'com.android.support:support-v4:+'
 }

@@ -2,6 +2,13 @@
 <items version="2" >
 
     <item
+        jar="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/libs/androidsvg-1.2.0.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="0b8e2b5de0473fdac58cbfb4bc1ef751b09125c4">
+        <dex dex="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/pre-dexed/debug/androidsvg-1.2.0-0b49b6b54ae7ac43cb89867f61b1457f62855a5d.jar" />
+    </item>
+    <item
         jar="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/exploded-aar/com.larswerkman/HoloColorPicker/1.4/classes.jar"
         jumboMode="false"
         revision="21.1.1"
@@ -28,6 +35,20 @@
         revision="21.1.1"
         sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
         <dex dex="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-7eee23a61934ce64dd4b4eb74490f6b94586333b.jar" />
+    </item>
+    <item
+        jar="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
+        <dex dex="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/pre-dexed/debug/classes-00b87c570d69c5ca5534f70ac8a42219966b920b.jar" />
+    </item>
+    <item
+        jar="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/libs/android-support-v7-palette.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="0d8be977fd907b3d0f58dd3260d075b32a583d09">
+        <dex dex="/Users/huangpeng/workspace/android/FloatingView/floatingMenu/build/intermediates/pre-dexed/debug/android-support-v7-palette-d766f69139e9b74d0c0fc2fe280f072e25d1f32e.jar" />
     </item>
 
 </items>

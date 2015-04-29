@@ -1,8 +1,7 @@
 package fr.anthonyfernandez.floatingmenu.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -18,16 +18,21 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListPopupWindow;
-import android.widget.PopupWindow;
-import fr.anthonyfernandez.floatingmenu.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.anthonyfernandez.floatingmenu.Adapter.CustomAdapter;
 import fr.anthonyfernandez.floatingmenu.Manager.PInfo;
 import fr.anthonyfernandez.floatingmenu.Manager.RetrievePackages;
+import fr.anthonyfernandez.floatingmenu.R;
 
 public class ServiceFloating extends Service {
 
@@ -35,7 +40,9 @@ public class ServiceFloating extends Service {
 
 	private WindowManager windowManager;
 	private ImageView chatHead;
+    private WindowManager.LayoutParams chatHeadParams;
     private ListPopupWindow popupWindow;
+    private View testView;
 
 	long lastPressTime;
 
@@ -78,6 +85,8 @@ public class ServiceFloating extends Service {
 			chatHead.setImageResource(R.drawable.floating2);
 		}
 
+        createTestView();
+
 		final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
 				WindowManager.LayoutParams.WRAP_CONTENT,
 				WindowManager.LayoutParams.WRAP_CONTENT,
@@ -88,8 +97,11 @@ public class ServiceFloating extends Service {
 		params.gravity = Gravity.TOP | Gravity.LEFT;
 		params.x = 0;
 		params.y = 100;
+        chatHeadParams = params;
 
 		windowManager.addView(chatHead, params);
+
+
 
 		try {
 			chatHead.setOnTouchListener(new View.OnTouchListener() {
@@ -151,16 +163,70 @@ public class ServiceFloating extends Service {
 			@Override
 			public void onClick(View arg0) {
                 if (isShowing) {
-                    popupWindow.dismiss();
+                    //popupWindow.dismiss();
                 }
                 else {
-                    initiatePopupWindow(chatHead);
+                    //initiatePopupWindow(chatHead);
                 }
                 isShowing = !isShowing;
+                showTestView(isShowing);
 			}
 		});
 
 	}
+
+    private void createTestView() {
+        if (testView == null) {
+            testView = new View(this);
+            testView.setBackgroundColor(Color.BLUE);
+            testView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (MotionEvent.ACTION_UP == event.getAction()) {
+                        testView.setVisibility(View.INVISIBLE);
+                    }
+                    return false;
+                }
+            });
+            testView.setVisibility(View.INVISIBLE);
+
+            final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.TYPE_PHONE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    PixelFormat.OPAQUE);
+
+            params.gravity = Gravity.CENTER;
+            windowManager.addView(testView, params);
+        }
+    }
+
+    private void showTestView(boolean show) {
+        View view = chatHead;
+        int cx = (chatHeadParams.x + view.getWidth() / 2);
+        int cy = (chatHeadParams.y + view.getHeight() / 2);
+        float radius = Math.max(testView.getWidth(), testView.getHeight());// * 2.0f;
+
+        Animator reveal;
+        if (show) {
+            testView.setVisibility(View.VISIBLE);
+            reveal = ViewAnimationUtils.createCircularReveal(testView, cx, cy, 0, radius);
+            reveal.setInterpolator(new AccelerateInterpolator(2.0f));
+        }
+        else {
+            reveal = ViewAnimationUtils.createCircularReveal(
+                    testView, cx, cy, radius, 0);
+            reveal.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    testView.setVisibility(View.INVISIBLE);
+                }
+            });
+        }
+        reveal.setDuration(600);
+        reveal.start();
+    }
 
 
 	private void initiatePopupWindow(View anchor) {
@@ -193,7 +259,6 @@ public class ServiceFloating extends Service {
 				}
 			});
 			popupWindow.show();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
