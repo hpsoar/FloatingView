@@ -31,7 +31,7 @@
             android:exported="true" />
 
         <activity
-            android:name="fr.anthonyfernandez.floatingmenu.Activities.Configurations"
+            android:name=".Activities.ConfigurationActivity"
             android:label="@string/title_activity_configurations"
             android:screenOrientation="portrait" >
         </activity>

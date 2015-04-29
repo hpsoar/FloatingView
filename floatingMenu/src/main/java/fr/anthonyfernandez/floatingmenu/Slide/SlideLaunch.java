@@ -43,20 +43,16 @@ public class SlideLaunch extends FragmentActivity {
             editor.commit();
             setContentView(R.layout.activity_launch);
 
-    		// Création de la liste de Fragments que fera défiler le PagerAdapter
     		List fragments = new Vector();
 
-    		// Ajout des Fragments dans la liste
     		fragments.add(Fragment.instantiate(this,SpanOne.class.getName()));
     		fragments.add(Fragment.instantiate(this,SpanTwo.class.getName()));
     		fragments.add(Fragment.instantiate(this,SpanThree.class.getName()));
 
-    		// Création de l'adapter qui s'occupera de l'affichage de la liste de
-    		// Fragments
     		this.mPagerAdapter = new InitPagerAdapter(super.getSupportFragmentManager(), fragments);
 
     		ViewPager pager = (ViewPager) super.findViewById(R.id.viewpager);
-    		// Affectation de l'adapter au ViewPager
+
     		pager.setAdapter(this.mPagerAdapter);
 
         }

@@ -9,8 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import fr.anthonyfernandez.floatingmenu.Activities.ConfigurationActivity;
 import fr.anthonyfernandez.floatingmenu.R;
-import fr.anthonyfernandez.floatingmenu.Activities.Configurations;
 
 public class SpanThree extends Fragment{
 	
@@ -27,7 +28,7 @@ public class SpanThree extends Fragment{
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(fa, Configurations.class);
+				Intent intent = new Intent(fa, ConfigurationActivity.class);
 				startActivity(intent);
 			}
 		});

@@ -22,7 +22,7 @@ import com.larswerkman.holocolorpicker.OpacityBar;
 
 import fr.anthonyfernandez.floatingmenu.R;
 
-public class Configurations extends Activity {
+public class ConfigurationActivity extends Activity {
 
 	private ImageView icon;
 
@@ -33,7 +33,7 @@ public class Configurations extends Activity {
 
 		icon = (ImageView)findViewById(R.id.imageView1);
 
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Configurations.this);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ConfigurationActivity.this);
 		if(prefs.getString("ICON", "floating2").equals("floating3")){
 			icon.setImageResource(R.drawable.floating3);
 		} else if(prefs.getString("ICON", "floating2").equals("floating4")){
@@ -111,7 +111,7 @@ public class Configurations extends Activity {
 		backHome.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intentMain = new Intent(Configurations.this, MainActivity.class);
+				Intent intentMain = new Intent(ConfigurationActivity.this, MainActivity.class);
 				startActivity(intentMain);
 			}
 		});
@@ -126,7 +126,7 @@ public class Configurations extends Activity {
 
 	private void setPreferences(String myIconPref)
 	{
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Configurations.this);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ConfigurationActivity.this);
 		Editor editor = prefs.edit();
 		editor.putString("ICON", myIconPref);
 		editor.commit();

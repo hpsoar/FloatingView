@@ -35,13 +35,10 @@ public class ServiceFloating extends Service {
 
 	private WindowManager windowManager;
 	private ImageView chatHead;
-	private PopupWindow pwindo;
+    private ListPopupWindow popupWindow;
 
-	boolean mHasDoubleClicked = false;
 	long lastPressTime;
-	private Boolean _enable = true;
 
-	ArrayList<String> myArray;
 	ArrayList<PInfo> apps;
 	List listCity;
 
@@ -59,11 +56,6 @@ public class ServiceFloating extends Service {
 
 		RetrievePackages getInstalledPackages = new RetrievePackages(getApplicationContext());
 		apps = getInstalledPackages.getInstalledApps(false);
-		myArray = new ArrayList<String>();
-
-		for(int i=0 ; i<apps.size() ; ++i) {
-			myArray.add(apps.get(i).appname);
-		}
 
 		listCity = new ArrayList();
 		for(int i=0 ; i<apps.size() ; ++i) {
@@ -117,14 +109,11 @@ public class ServiceFloating extends Service {
 
 						// If double click...
 						if (pressTime - lastPressTime <= 300) {
-							createNotification();
-							ServiceFloating.this.stopSelf();
-							mHasDoubleClicked = true;
+                            createNotification();
+                            ServiceFloating.this.stopSelf();
 						}
-						else {     // If not double click....
-							mHasDoubleClicked = false;
-						}
-						lastPressTime = pressTime; 
+
+						lastPressTime = pressTime;
 						initialX = paramsF.x;
 						initialY = paramsF.y;
 						initialTouchX = event.getRawX();
@@ -141,19 +130,33 @@ public class ServiceFloating extends Service {
 					return false;
 				}
 			});
+
+            chatHead.setOnLongClickListener(new View.OnLongClickListener() {
+
+                @Override
+                public boolean onLongClick(View v) {
+                    // TODO: show an input interface, with action buttons
+                    // 				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    //				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    //				getApplicationContext().startActivity(intent);
+                    return false;
+                }
+            });
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 
 		chatHead.setOnClickListener(new View.OnClickListener() {
-
+            private boolean isShowing = false;
 			@Override
 			public void onClick(View arg0) {
-				initiatePopupWindow(chatHead);
-				_enable = false;
-				//				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-				//				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				//				getApplicationContext().startActivity(intent);
+                if (isShowing) {
+                    popupWindow.dismiss();
+                }
+                else {
+                    initiatePopupWindow(chatHead);
+                }
+                isShowing = !isShowing;
 			}
 		});
 
@@ -163,13 +166,14 @@ public class ServiceFloating extends Service {
 	private void initiatePopupWindow(View anchor) {
 		try {
 			Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-			ListPopupWindow popup = new ListPopupWindow(this);
-			popup.setAnchorView(anchor);
-			popup.setWidth((int) (display.getWidth()/(1.5)));
-			//ArrayAdapter<String> arrayAdapter = 
-			//new ArrayAdapter<String>(this,R.layout.list_item, myArray);
-			popup.setAdapter(new CustomAdapter(getApplicationContext(), R.layout.row, listCity));
-			popup.setOnItemClickListener(new OnItemClickListener() {
+            if (popupWindow == null) {
+                popupWindow = new ListPopupWindow(this);
+            }
+
+			popupWindow.setAnchorView(anchor);
+			popupWindow.setWidth((int) (display.getWidth()/(1.5)));
+			popupWindow.setAdapter(new CustomAdapter(getApplicationContext(), R.layout.row, listCity));
+			popupWindow.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View view, int position, long id3) {
@@ -182,12 +186,13 @@ public class ServiceFloating extends Service {
 							throw new PackageManager.NameNotFoundException();
 						i.addCategory(Intent.CATEGORY_LAUNCHER);
 						startActivity(i);
+                        popupWindow.dismiss();
 					} catch (PackageManager.NameNotFoundException e) {
 
 					}
 				}
 			});
-			popup.show();
+			popupWindow.show();
 
 		} catch (Exception e) {
 			e.printStackTrace();

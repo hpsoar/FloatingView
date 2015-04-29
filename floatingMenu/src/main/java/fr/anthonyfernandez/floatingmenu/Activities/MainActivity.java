@@ -1,24 +1,15 @@
 package fr.anthonyfernandez.floatingmenu.Activities;
 
 import fr.anthonyfernandez.floatingmenu.R;
-import fr.anthonyfernandez.floatingmenu.R.id;
-import fr.anthonyfernandez.floatingmenu.R.layout;
 import fr.anthonyfernandez.floatingmenu.Service.ServiceFloating;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 
 public class MainActivity extends Activity {
 
@@ -68,7 +59,7 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
-				Intent intent = new Intent(MainActivity.this, Configurations.class);
+				Intent intent = new Intent(MainActivity.this, ConfigurationActivity.class);
 				startActivity(intent);
 				stopService(new Intent(MainActivity.this, ServiceFloating.class));
 			}
