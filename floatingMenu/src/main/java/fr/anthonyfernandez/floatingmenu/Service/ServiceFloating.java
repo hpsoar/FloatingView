@@ -195,9 +195,9 @@ public class ServiceFloating extends Service {
                     WindowManager.LayoutParams.MATCH_PARENT,
                     WindowManager.LayoutParams.TYPE_PHONE,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    PixelFormat.OPAQUE);
+                    PixelFormat.TRANSLUCENT);
 
-            params.gravity = Gravity.CENTER;
+            //params.gravity = Gravity.CENTER;
             windowManager.addView(testView, params);
         }
     }
