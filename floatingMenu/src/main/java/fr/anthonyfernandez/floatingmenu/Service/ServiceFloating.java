@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.anthonyfernandez.floatingmenu.Adapter.CustomAdapter;
+import fr.anthonyfernandez.floatingmenu.Card;
 import fr.anthonyfernandez.floatingmenu.Manager.PInfo;
 import fr.anthonyfernandez.floatingmenu.Manager.RetrievePackages;
 import fr.anthonyfernandez.floatingmenu.R;
@@ -177,17 +178,7 @@ public class ServiceFloating extends Service {
 
     private void createTestView() {
         if (testView == null) {
-            testView = new View(this);
-            testView.setBackgroundColor(Color.BLUE);
-            testView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (MotionEvent.ACTION_UP == event.getAction()) {
-                        testView.setVisibility(View.INVISIBLE);
-                    }
-                    return false;
-                }
-            });
+            testView = new Card(this);
             testView.setVisibility(View.INVISIBLE);
 
             final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
@@ -224,7 +215,7 @@ public class ServiceFloating extends Service {
                 }
             });
         }
-        reveal.setDuration(600);
+        reveal.setDuration(200);
         reveal.start();
     }
 
