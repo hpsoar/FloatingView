@@ -6,21 +6,13 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
-import android.widget.GridLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -70,7 +62,7 @@ public class QuickLauncherView extends RelativeLayout {
                         throw new PackageManager.NameNotFoundException();
                     intent.addCategory(Intent.CATEGORY_LAUNCHER);
                     getContext().startActivity(intent);
-                    toggleVisibility();
+//                    toggleVisibility();
                 } catch (PackageManager.NameNotFoundException e) {
 
                 }

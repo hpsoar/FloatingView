@@ -22,6 +22,7 @@ import com.beacon.android.QuickLauncherView;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.anthonyfernandez.floatingmenu.Activities.QuickLauncherActivity;
 import fr.anthonyfernandez.floatingmenu.Manager.PInfo;
 import fr.anthonyfernandez.floatingmenu.R;
 
@@ -32,13 +33,8 @@ public class ServiceFloating extends Service {
 	private WindowManager windowManager;
 	private ImageView chatHead;
     private WindowManager.LayoutParams chatHeadParams;
-    private ListPopupWindow popupWindow;
-    private QuickLauncherView testView;
 
 	long lastPressTime;
-
-	ArrayList<PInfo> apps;
-	List listCity;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -52,11 +48,7 @@ public class ServiceFloating extends Service {
 		
 		windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-        createTestView();
-
         createChatHead();
-
-        updateLancherViewAnchor();
 
 		try {
 			chatHead.setOnTouchListener(new View.OnTouchListener() {
@@ -92,7 +84,6 @@ public class ServiceFloating extends Service {
 						paramsF.x = initialX + (int) (event.getRawX() - initialTouchX);
 						paramsF.y = initialY + (int) (event.getRawY() - initialTouchY);
 						windowManager.updateViewLayout(chatHead, paramsF);
-                        updateLancherViewAnchor();
                         return true;
 					}
 					return false;
@@ -117,33 +108,16 @@ public class ServiceFloating extends Service {
 		chatHead.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-                testView.toggleVisibility();
+                int cx = (chatHeadParams.x + chatHead.getWidth() / 2);
+                int cy = (chatHeadParams.y + chatHead.getHeight() / 2);
+
+                Intent intent = new Intent(ServiceFloating.this, QuickLauncherActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
 			}
 		});
 
 	}
-
-    private void updateLancherViewAnchor() {
-        int cx = (chatHeadParams.x + chatHead.getWidth() / 2);
-        int cy = (chatHeadParams.y + chatHead.getHeight() / 2);
-        testView.setAnchor(cx, cy);
-    }
-
-    private void createTestView() {
-        testView = new QuickLauncherView(this);
-        //testView = new Card(this);
-        testView.setVisibility(View.INVISIBLE);
-
-        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.TYPE_PHONE,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                PixelFormat.TRANSLUCENT);
-
-        //params.gravity = Gravity.CENTER;
-        windowManager.addView(testView, params);
-    }
 
     private void createChatHead() {
         chatHead = new ImageView(this);
@@ -194,7 +168,5 @@ public class ServiceFloating extends Service {
 	public void onDestroy() {
 		super.onDestroy();
 		if (chatHead != null) windowManager.removeView(chatHead);
-        if (testView != null) windowManager.removeView(testView);
 	}
-
 }
