@@ -26,6 +26,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 
+import com.beacon.android.QuickLauncherView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -178,7 +180,8 @@ public class ServiceFloating extends Service {
 
     private void createTestView() {
         if (testView == null) {
-            testView = new Card(this);
+            testView = new QuickLauncherView(this);
+            //testView = new Card(this);
             testView.setVisibility(View.INVISIBLE);
 
             final WindowManager.LayoutParams params = new WindowManager.LayoutParams(

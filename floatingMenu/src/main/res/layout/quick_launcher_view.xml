@@ -1,0 +1,19 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.beacon.android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <GridView
+        android:id="@+id/quick_launcher_grid_view"
+        android:background="@color/card_border"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:columnWidth="@dimen/itemSize"
+        android:gravity="center"
+        android:horizontalSpacing="4dp"
+        android:verticalSpacing="4dp"
+        android:numColumns="auto_fit"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="insideOverlay"
+        android:listSelector="@drawable/item_background_selector"
+        android:stretchMode="columnWidth"/>
+</RelativeLayout>
