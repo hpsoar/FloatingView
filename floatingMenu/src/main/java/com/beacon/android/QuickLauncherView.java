@@ -78,6 +78,21 @@ public class QuickLauncherView extends RelativeLayout {
         });
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        System.out.print("hello");
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        System.out.print(""+event.getKeyCode());
+        if (event.getKeyCode() == KeyEvent.KEYCODE_HOME || event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            toggleVisibility();
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
     public void setAnchor(int cx, int cy) {
         this.anchorX = cx;
         this.anchorY = cy;
