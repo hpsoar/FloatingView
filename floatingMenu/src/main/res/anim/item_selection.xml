@@ -5,9 +5,9 @@
         android:state_pressed="true">
         <objectAnimator
             android:duration="@android:integer/config_shortAnimTime"
-            android:propertyName="translationZ"
+            android:propertyName="radius"
             android:valueFrom="2dip"
-            android:valueTo="4dip"
+            android:valueTo="50dip"
             android:valueType="floatType" />
     </item>
     <item>
