@@ -15,35 +15,24 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import fr.anthonyfernandez.floatingmenu.Manager.PInfo;
 import fr.anthonyfernandez.floatingmenu.R;
 
 public class GridAdapter extends BaseAdapter{
-    public static class Item{
-        public String text;
-        public int resId;
-    }
-
-    private List<Item> mItems = new ArrayList<GridAdapter.Item>();
+    private List<PInfo> appItems = new ArrayList<PInfo>();
     private Context mContext;
     public GridAdapter(Context context) {
-        //测试数据
-        for (int i = 0; i < 50; i++) {
-            Item object = new Item();
-            object.text = "Text "+i;
-            object.resId = R.drawable.floating4;
-            mItems.add(object);
-        }
         mContext = context;
     }
 
     @Override
     public int getCount() {
-        return mItems.size();
+        return appItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mItems.get(position);
+        return appItems.get(position);
     }
 
     @Override
@@ -58,9 +47,13 @@ public class GridAdapter extends BaseAdapter{
         }
         ImageView image = (ImageView) convertView.findViewById(R.id.icon);
         TextView text = (TextView) convertView.findViewById(R.id.text);
-        Item item = (Item) getItem(position);
-        image.setImageResource(item.resId);
-        text.setText(item.text);
+        PInfo item = (PInfo) getItem(position);
+        image.setImageDrawable(item.icon);
+        text.setText(item.appname);
         return convertView;
+    }
+
+    public void setAppItems(ArrayList<PInfo> items) {
+        this.appItems = items;
     }
 }
