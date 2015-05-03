@@ -64,6 +64,7 @@ public class RetrievePackages {
 
         List<ResolveInfo> launchables=pm.queryIntentActivities(main, 0);
 
+        
         return  launchables;
     }
 }
