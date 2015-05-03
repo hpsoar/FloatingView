@@ -14,13 +14,15 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.nio.channels.Pipe;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.anthonyfernandez.floatingmenu.Manager.PInfo;
 import fr.anthonyfernandez.floatingmenu.R;
 
 public class GridAdapter extends BaseAdapter{
-    private List<ResolveInfo> appItems = new ArrayList<>();
+    private List<PInfo> appItems = new ArrayList<>();
     private Context mContext;
     public GridAdapter(Context context) {
         mContext = context;
@@ -48,14 +50,13 @@ public class GridAdapter extends BaseAdapter{
         }
         ImageView image = (ImageView) convertView.findViewById(R.id.icon);
         TextView text = (TextView) convertView.findViewById(R.id.text);
-        ResolveInfo item = (ResolveInfo)getItem(position);
-        PackageManager pm = parent.getContext().getPackageManager();
-        image.setImageDrawable(item.loadIcon(pm));
-        text.setText(item.loadLabel(pm).toString());
+        PInfo item = (PInfo)getItem(position);
+        image.setImageDrawable(item.icon);
+        text.setText(item.appname);
         return convertView;
     }
 
-    public void setAppItems(List<ResolveInfo> items) {
+    public void setAppItems(List<PInfo> items) {
         this.appItems = items;
         notifyDataSetChanged();
     }

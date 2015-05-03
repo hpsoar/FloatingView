@@ -55,16 +55,25 @@ public class RetrievePackages {
 //
 //    }
 
-    public List<ResolveInfo> test() {
+    public List<PInfo> test() {
         Intent main=new Intent(Intent.ACTION_MAIN, null);
 
         main.addCategory(Intent.CATEGORY_LAUNCHER);
 
         PackageManager pm=_ctx.getPackageManager();
 
-        List<ResolveInfo> launchables=pm.queryIntentActivities(main, 0);
+        List<ResolveInfo> launchables = pm.queryIntentActivities(main, 0);
 
-        
-        return  launchables;
+        ArrayList<PInfo> res = new ArrayList<>(launchables.size());
+        for (int i = 0; i < launchables.size(); ++i) {
+            ResolveInfo app = launchables.get(i);
+            PInfo pInfo = new PInfo();
+            pInfo.appname = app.loadLabel(pm).toString();
+            pInfo.pname = app.resolvePackageName;
+            pInfo.icon = app.loadIcon(pm);
+            res.add(pInfo);
+        }
+
+        return  res;
     }
 }

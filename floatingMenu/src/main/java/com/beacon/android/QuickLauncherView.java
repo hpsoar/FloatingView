@@ -6,7 +6,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -20,6 +19,7 @@ import android.widget.RelativeLayout;
 
 import java.util.List;
 
+import fr.anthonyfernandez.floatingmenu.Manager.PInfo;
 import fr.anthonyfernandez.floatingmenu.Manager.RetrievePackages;
 import fr.anthonyfernandez.floatingmenu.R;
 
@@ -58,8 +58,8 @@ public class QuickLauncherView extends RelativeLayout {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PackageManager manager = getContext().getPackageManager();
                 try {
-                    ResolveInfo app = (ResolveInfo)gridAdapter.getItem(position);
-                    Intent intent = manager.getLaunchIntentForPackage(app.resolvePackageName);
+                    PInfo app = (PInfo)gridAdapter.getItem(position);
+                    Intent intent = manager.getLaunchIntentForPackage(app.pname);
                     if (intent == null)
                         throw new PackageManager.NameNotFoundException();
                     intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -125,7 +125,7 @@ public class QuickLauncherView extends RelativeLayout {
         reveal.start();
     }
 
-    private List<ResolveInfo> getAppList() {
+    private List<PInfo> getAppList() {
         RetrievePackages getInstalledPackages = new RetrievePackages(getContext().getApplicationContext());
         return getInstalledPackages.test();
     }
