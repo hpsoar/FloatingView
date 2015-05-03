@@ -6,29 +6,25 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
+import android.content.pm.ResolveInfo;
+import android.provider.Settings;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
-import android.widget.GridLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import fr.anthonyfernandez.floatingmenu.Manager.PInfo;
 import fr.anthonyfernandez.floatingmenu.Manager.RetrievePackages;
 import fr.anthonyfernandez.floatingmenu.R;
 
 public class QuickLauncherView extends RelativeLayout {
+    private static String TAG = "QuickLauncherView";
     private GridView gridView;
     private GridAdapter gridAdapter;
     private int anchorX, anchorY;
@@ -55,8 +51,6 @@ public class QuickLauncherView extends RelativeLayout {
 
         this.gridAdapter = new GridAdapter(getContext());
 
-        this.gridAdapter.setAppItems(this.getAppList());
-
         this.gridView.setAdapter(this.gridAdapter);
 
         this.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -64,8 +58,8 @@ public class QuickLauncherView extends RelativeLayout {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PackageManager manager = getContext().getPackageManager();
                 try {
-                    PInfo app = (PInfo)gridAdapter.getItem(position);
-                    Intent intent = manager.getLaunchIntentForPackage(app.pname.toString());
+                    ResolveInfo app = (ResolveInfo)gridAdapter.getItem(position);
+                    Intent intent = manager.getLaunchIntentForPackage(app.resolvePackageName);
                     if (intent == null)
                         throw new PackageManager.NameNotFoundException();
                     intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -103,6 +97,7 @@ public class QuickLauncherView extends RelativeLayout {
             this.hideTo(anchorX, anchorY);
         }
         else {
+            this.loadApps();
             this.showFrom(anchorX, anchorY);
         }
     }
@@ -130,8 +125,28 @@ public class QuickLauncherView extends RelativeLayout {
         reveal.start();
     }
 
-    private ArrayList<PInfo> getAppList() {
+    private List<ResolveInfo> getAppList() {
         RetrievePackages getInstalledPackages = new RetrievePackages(getContext().getApplicationContext());
-        return getInstalledPackages.getInstalledApps(false);
+        return getInstalledPackages.test();
+    }
+
+    public void loadApps() {
+        if (this.gridAdapter.getCount() == 0) {
+            this.gridAdapter.setAppItems(getAppList());
+            UStats.getStats(getContext().getApplicationContext());
+
+            if (UStats.getUsageStatsList(getContext()).isEmpty() && UStats.getUsageStatsList(getContext().getApplicationContext()).isEmpty()){
+                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    getContext().getApplicationContext().startActivity(intent);
+                }
+                catch (Exception ex) {
+                    Log.d(TAG, ex.getMessage());
+                }
+            }
+
+            UStats.printCurrentUsageStatus(getContext().getApplicationContext());
+        }
     }
 }

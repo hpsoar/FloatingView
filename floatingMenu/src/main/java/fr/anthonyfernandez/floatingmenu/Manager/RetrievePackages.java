@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
-
+//import
 public class RetrievePackages {
 	
 	private Context _ctx;
@@ -28,7 +31,7 @@ public class RetrievePackages {
 
     public ArrayList<PInfo> getInstalledApps(boolean getSysPackages) {
         ArrayList<PInfo> res = new ArrayList<PInfo>();        
-        List<PackageInfo> packs = _ctx.getPackageManager().getInstalledPackages(0);
+        List<PackageInfo> packs = _ctx.getPackageManager().getInstalledPackages(PackageManager.GET_ACTIVITIES);
         for(int i=0;i<packs.size();i++) {
             PackageInfo p = packs.get(i);
             if ((!getSysPackages) && (p.versionName == null)) {
@@ -45,6 +48,22 @@ public class RetrievePackages {
                 res.add(newInfo);
             }
         }
-        return res; 
+        return res;
+    }
+
+//    public ArrayList<PInfo> getMostFrequentlyUsedApps() {
+//
+//    }
+
+    public List<ResolveInfo> test() {
+        Intent main=new Intent(Intent.ACTION_MAIN, null);
+
+        main.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        PackageManager pm=_ctx.getPackageManager();
+
+        List<ResolveInfo> launchables=pm.queryIntentActivities(main, 0);
+
+        return  launchables;
     }
 }
