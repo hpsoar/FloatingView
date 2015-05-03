@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.anthonyfernandez.floatingmenu.Manager.PInfo;
@@ -28,6 +29,7 @@ public class QuickLauncherView extends RelativeLayout {
     private GridView gridView;
     private GridAdapter gridAdapter;
     private int anchorX, anchorY;
+    private boolean inToggleAnimation = false;
 
     public QuickLauncherView(Context context) {
         super(context);
@@ -58,7 +60,7 @@ public class QuickLauncherView extends RelativeLayout {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PackageManager manager = getContext().getPackageManager();
                 try {
-                    PInfo app = (PInfo)gridAdapter.getItem(position);
+                    PInfo app = (PInfo) gridAdapter.getItem(position);
                     Intent intent = manager.getLaunchIntentForPackage(app.pname);
                     if (intent == null)
                         throw new PackageManager.NameNotFoundException();
@@ -82,7 +84,9 @@ public class QuickLauncherView extends RelativeLayout {
     public boolean dispatchKeyEvent(KeyEvent event) {
         System.out.print(""+event.getKeyCode());
         if (event.getKeyCode() == KeyEvent.KEYCODE_HOME || event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            toggleVisibility();
+            if (getVisibility() == View.VISIBLE) {
+                toggleVisibility();
+            }
         }
         return super.dispatchKeyEvent(event);
     }
@@ -113,12 +117,16 @@ public class QuickLauncherView extends RelativeLayout {
     }
 
     private void hideTo(int cx, int cy) {
+        if (inToggleAnimation) return;
+
+        inToggleAnimation = true;
         float radius = Math.max(this.getWidth(), this.getHeight());// * 2.0f;
         Animator reveal = ViewAnimationUtils.createCircularReveal(this, cx, cy, radius, 0);
         reveal.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 QuickLauncherView.this.setVisibility(View.INVISIBLE);
+                inToggleAnimation = false;
             }
         });
         reveal.setDuration(200);
@@ -127,26 +135,27 @@ public class QuickLauncherView extends RelativeLayout {
 
     private List<PInfo> getAppList() {
         RetrievePackages getInstalledPackages = new RetrievePackages(getContext().getApplicationContext());
-        return getInstalledPackages.test();
+        List<String> mostFrequentlyUsedPackages = UStats.mostFrequentlyUsedPackages(getContext().getApplicationContext());
+        if (mostFrequentlyUsedPackages.isEmpty()) {
+            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                getContext().getApplicationContext().startActivity(intent);
+            }
+            catch (Exception ex) {
+                Log.d(TAG, ex.getMessage());
+            }
+        }
+        if (mostFrequentlyUsedPackages.size() > 20) {
+            mostFrequentlyUsedPackages = mostFrequentlyUsedPackages.subList(0, 20);
+        }
+
+        return getInstalledPackages.test(mostFrequentlyUsedPackages, 20);
     }
 
     public void loadApps() {
         if (this.gridAdapter.getCount() == 0) {
             this.gridAdapter.setAppItems(getAppList());
-            UStats.getStats(getContext().getApplicationContext());
-
-            if (UStats.getUsageStatsList(getContext()).isEmpty() && UStats.getUsageStatsList(getContext().getApplicationContext()).isEmpty()){
-                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
-                    getContext().getApplicationContext().startActivity(intent);
-                }
-                catch (Exception ex) {
-                    Log.d(TAG, ex.getMessage());
-                }
-            }
-
-            UStats.printCurrentUsageStatus(getContext().getApplicationContext());
         }
     }
 }

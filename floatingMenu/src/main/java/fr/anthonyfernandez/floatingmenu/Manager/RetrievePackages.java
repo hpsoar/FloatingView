@@ -31,7 +31,7 @@ public class RetrievePackages {
 
     public ArrayList<PInfo> getInstalledApps(boolean getSysPackages) {
         ArrayList<PInfo> res = new ArrayList<PInfo>();        
-        List<PackageInfo> packs = _ctx.getPackageManager().getInstalledPackages(PackageManager.GET_ACTIVITIES);
+        List<PackageInfo> packs = _ctx.getPackageManager().getInstalledPackages(0);
         for(int i=0;i<packs.size();i++) {
             PackageInfo p = packs.get(i);
             if ((!getSysPackages) && (p.versionName == null)) {
@@ -55,7 +55,7 @@ public class RetrievePackages {
 //
 //    }
 
-    public List<PInfo> test() {
+    public List<PInfo> test(List<String> filterList, int limit) {
         Intent main=new Intent(Intent.ACTION_MAIN, null);
 
         main.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -67,11 +67,20 @@ public class RetrievePackages {
         ArrayList<PInfo> res = new ArrayList<>(launchables.size());
         for (int i = 0; i < launchables.size(); ++i) {
             ResolveInfo app = launchables.get(i);
-            PInfo pInfo = new PInfo();
-            pInfo.appname = app.loadLabel(pm).toString();
-            pInfo.pname = app.resolvePackageName;
-            pInfo.icon = app.loadIcon(pm);
-            res.add(pInfo);
+            boolean shouldAdd = false;
+            if (filterList.size() > 0) {
+                shouldAdd = filterList.contains(app.activityInfo.packageName);
+            }
+            else if (res.size() < limit) {
+                shouldAdd = true;
+            }
+            if (shouldAdd) {
+                PInfo pInfo = new PInfo();
+                pInfo.appname = app.loadLabel(pm).toString();
+                pInfo.pname = app.activityInfo.packageName;
+                pInfo.icon = app.loadIcon(pm);
+                res.add(pInfo);
+            }
         }
 
         return  res;
