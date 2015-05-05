@@ -150,7 +150,8 @@ public class QuickLauncherView extends RelativeLayout {
             mostFrequentlyUsedPackages = mostFrequentlyUsedPackages.subList(0, 20);
         }
 
-        return getInstalledPackages.test(mostFrequentlyUsedPackages, 20);
+        return getInstalledPackages.test2(mostFrequentlyUsedPackages);
+//        return getInstalledPackages.test(mostFrequentlyUsedPackages, 20);
     }
 
     public void loadApps() {

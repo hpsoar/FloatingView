@@ -85,4 +85,34 @@ public class RetrievePackages {
 
         return  res;
     }
+
+    public List<PInfo> test2(List<String> packageNames) {
+        ArrayList<PInfo> res = new ArrayList<>(packageNames.size());
+        for (String packageName : packageNames) {
+            PInfo pInfo = getApplicationInfo(packageName);
+            if (pInfo != null) {
+                res.add(pInfo);
+            }
+        }
+        return  res;
+    }
+
+    private PInfo getApplicationInfo(String packageName) {
+        try {
+            PackageManager pm = _ctx.getPackageManager();
+            ApplicationInfo app = pm.getApplicationInfo(packageName, 0);
+
+            Drawable icon = pm.getApplicationIcon(app);
+            String name = pm.getApplicationLabel(app).toString();
+
+            PInfo pInfo = new PInfo();
+            pInfo.appname = name;
+            pInfo.pname = packageName;
+            pInfo.icon = icon;
+            return pInfo;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
